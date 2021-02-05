@@ -20,8 +20,8 @@ class Battlesnake(object):
             "apiversion": "1",
             "author": "CanBot",  # TODO: Your Battlesnake Username
             "color": "#FF00FF",  # TODO: Personalize
-            "head": "default",  # TODO: Personalize
-            "tail": "default",  # TODO: Personalize
+            "head": "gamer",  # TODO: Personalize
+            "tail": "tiger-tail",  # TODO: Personalize
         }
 
     @cherrypy.expose

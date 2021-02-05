@@ -1,2 +1,6 @@
 language = "python3"
+<<<<<<< HEAD
 run = "python server.py"
+=======
+run = "python server.py"
+>>>>>>> e30cd16541dfaf085e63877f1a5b5010ee5f3169
