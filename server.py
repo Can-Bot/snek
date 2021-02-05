@@ -24,7 +24,7 @@ class Battlesnake(object):
 			"head": "default",  # TODO: Personalize
 			"tail": "default",  # TODO: Personalize
 		}
-	
+
 	@cherrypy.expose
 	@cherrypy.tools.json_in()
 	def start(self):
@@ -55,7 +55,7 @@ class Battlesnake(object):
 		body = data['you']['body']
 
 		possible_moves = ["up", "down", "left", "right"]
-		
+
 		# Position of head if snake moves in direction
 		upNext = head.copy(); upNext['y'] += 1
 		downNext = head.copy(); downNext['y'] -= 1
@@ -83,7 +83,7 @@ class Battlesnake(object):
     for nextMove in nextPos:
       if nextPos[nextMove] in data['board']['food']
         foodMoves.append(nextMove)
-      if foodMoves != []  
+      if foodMoves != []
         move = random.choice(foodMoves)
 
 		print(f"MOVE: {move}")
