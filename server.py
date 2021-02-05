@@ -19,8 +19,8 @@ class Battlesnake(object):
 		# TIP: If you open your Battlesnake URL in browser you should see this data
 		return {
 			"apiversion": "1",
-			"author": "Alistair Hewitt, CanBot",  # TODO: Your Battlesnake Username
-			"color": "#ff00ff",  # TODO: Personalize
+			"author": "Alistair Hewitt",  # TODO: Your Battlesnake Username
+			"color": "#ffa500",  # TODO: Personalize
 			"head": "default",  # TODO: Personalize
 			"tail": "default",  # TODO: Personalize
 		}
@@ -62,6 +62,8 @@ class Battlesnake(object):
 		leftNext = head.copy(); leftNext['x'] -= 1
 		rightNext = head.copy(); rightNext['x'] += 1
 
+		print(headNext); print(upNext); print(downNext); print(leftNext); print(rightNext)
+
 		# If move would result in collision with self, remove from possible moves
 		if (upNext in body) or (upNext['y'] >= height):
 			possible_moves.remove('up')
@@ -75,7 +77,9 @@ class Battlesnake(object):
 		move = random.choice(possible_moves)
 
     nextPos = {"up" : upNext, "down": downNext, "left": leftNext, "right": rightNext}
+
     foodMoves = []
+
     for nextMove in nextPos:
       if nextPos[nextMove] in data['board']['food']
         foodMoves.append(nextMove)
