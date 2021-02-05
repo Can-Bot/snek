@@ -19,8 +19,8 @@ class Battlesnake(object):
 		# TIP: If you open your Battlesnake URL in browser you should see this data
 		return {
 			"apiversion": "1",
-			"author": "Alistair Hewitt",  # TODO: Your Battlesnake Username
-			"color": "#ffa500",  # TODO: Personalize
+			"author": "Alistair Hewitt, CanBot",  # TODO: Your Battlesnake Username
+			"color": "#ff00ff",  # TODO: Personalize
 			"head": "default",  # TODO: Personalize
 			"tail": "default",  # TODO: Personalize
 		}
@@ -57,21 +57,21 @@ class Battlesnake(object):
 		possible_moves = ["up", "down", "left", "right"]
 		
 		# Position of head if snake moves in direction
-		up = head.copy(); up['y'] += 1
-		down = head.copy(); down['y'] -= 1
-		left = head.copy(); left['x'] -= 1
-		right = head.copy(); right['x'] += 1
+		upNext = head.copy(); up['y'] += 1
+		downNext = head.copy(); down['y'] -= 1
+		leftNext = head.copy(); left['x'] -= 1
+		rightNext = head.copy(); right['x'] += 1
 
 		print(head); print(up); print(down); print(left); print(right)
 
 		# If move would result in collision with self, remove from possible moves
-		if (up in body) or (up['y'] >= height):
+		if (upNext in body) or (upNext['y'] >= height):
 			possible_moves.remove('up')
-		if (down in body) or (down['y'] < 0):
+		if (downNext in body) or (downNext['y'] < 0):
 			possible_moves.remove('down')
-		if (left in body) or (left['x'] < 0):
+		if (leftNext in body) or (leftNext['x'] < 0):
 			possible_moves.remove('left')
-		if (right in body) or (right['x'] >= width):
+		if (rightNext in body) or (rightNext['x'] >= width):
 			possible_moves.remove('right')
 
 		move = random.choice(possible_moves)
