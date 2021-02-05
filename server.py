@@ -2,7 +2,13 @@ import os
 import random
 
 import cherrypy
+import pprint
+pp = pprint.PrettyPrinter(indent=4)
 
+"""
+This is a simple Battlesnake server written in Python.
+For instructions see https://github.com/BattlesnakeOfficial/starter-snake-python/README.md
+"""
 
 class Battlesnake(object):
 	@cherrypy.expose
