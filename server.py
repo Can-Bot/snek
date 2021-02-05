@@ -57,12 +57,10 @@ class Battlesnake(object):
 		possible_moves = ["up", "down", "left", "right"]
 		
 		# Position of head if snake moves in direction
-		upNext = head.copy(); up['y'] += 1
-		downNext = head.copy(); down['y'] -= 1
-		leftNext = head.copy(); left['x'] -= 1
-		rightNext = head.copy(); right['x'] += 1
-
-		print(head); print(up); print(down); print(left); print(right)
+		upNext = head.copy(); upNext['y'] += 1
+		downNext = head.copy(); downNext['y'] -= 1
+		leftNext = head.copy(); leftNext['x'] -= 1
+		rightNext = head.copy(); rightNext['x'] += 1
 
 		# If move would result in collision with self, remove from possible moves
 		if (upNext in body) or (upNext['y'] >= height):
@@ -75,6 +73,14 @@ class Battlesnake(object):
 			possible_moves.remove('right')
 
 		move = random.choice(possible_moves)
+
+    nextPos = {"up" : upNext, "down": downNext, "left": leftNext, "right": rightNext}
+    foodMoves = []
+    for nextMove in nextPos:
+      if nextPos[nextMove] in data['board']['food']
+        foodMoves.append(nextMove)
+      if foodMoves != []  
+        move = random.choice(foodMoves)
 
 		print(f"MOVE: {move}")
 		return {"move": move}
