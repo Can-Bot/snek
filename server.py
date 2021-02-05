@@ -42,7 +42,16 @@ class Battlesnake(object):
         # Valid moves are "up", "down", "left", or "right".
         # TODO: Use the information in cherrypy.request.json to decide your next move.
         data = cherrypy.request.json
-        print(data['board']['you'])
+        print(data['board'])
+
+        {'game': {'id': '2b465ebb-dda6-49f6-b009-19160171c9e1', 'ruleset': {'name': 'solo', 'version': 'v1.0.17'}, 'timeout': 500},
+        'turn': 3,
+        'board':
+        {'height': 11, 'width': 11, 'snakes': [{'id': 'gs_Gk3W4pGpPDmmFyCFpbFpHFdS', 'name': 'FirstSnek2', 'latency': '57', 'health': 99, 'body': [{'x': 8, 'y': 3}, {'x': 8, 'y': 2}, {'x': 9, 'y': 2}, {'x': 9, 'y': 1}], 'head': {'x': 8, 'y': 3}, 'length': 4, 'shout': ''}],
+        'food': [{'x': 5, 'y': 5}],
+        'hazards': []},
+        'you': {'id': 'gs_Gk3W4pGpPDmmFyCFpbFpHFdS', 'name': 'FirstSnek2', 'latency': '57', 'health': 99,
+        'body': [{'x': 8, 'y': 3}, {'x': 8, 'y': 2}, {'x': 9, 'y': 2}, {'x': 9, 'y': 1}], 'head': {'x': 8, 'y': 3}, 'length': 4, 'shout': ''}}
 
 
         # Choose a random direction to move in
