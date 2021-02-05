@@ -78,17 +78,12 @@ class Battlesnake(object):
     for nextMove in nextPos:
       if nextPos[nextMove] == data['board']['food']:
         foodMoves.append(nextMove)
-<<<<<<< HEAD
-      if foodMoves != []
-        move = random.choice(foodMoves)
-=======
 
-    if foodMoves != []:  
+    if foodMoves != []:
       move = random.choice(foodMoves)
     else:
-        move = random.choice(possible_moves)
->>>>>>> 56da897551840ee02fb83df9640721e622da0613
-
+      move = random.choice(possible_moves)
+    
 		print(f"MOVE: {move}")
 		return {"move": move}
 
