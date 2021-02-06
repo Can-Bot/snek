@@ -52,8 +52,6 @@ class Battlesnake(object):
 
 		# Position of head
 		head = data['you']['head']
-		# List of positions of body
-		body = data['you']['body']
 
 		#List of snake dicts
 		snakes = data["board"]["snakes"]
@@ -124,6 +122,15 @@ class Battlesnake(object):
 			food.append([food_bit["x"],food_bit["y"]])
 		food = np.array(food)
 
+        #store body coordinates
+		body =[]
+		for body_bit in data["you"]["body"]:
+			body.append([body_bit["x"],body_bit["y"]])
+		for snake in data["board"]["snakes"]:
+			for body_bit in snake["body"]:
+				body.append([body_bit["x"],body_bit["y"]])
+		body = np.array(body)
+
 		#evaluate nearest food coordinates
 		food_vector = np.array([head["x"], head["y"]]) - food
 		food_norm = np.linalg.norm(food_vector, axis = 1)
@@ -149,6 +156,15 @@ class Battlesnake(object):
 		d = grid_coor[:,w[0,:],w[1,:]]
 
 		body = np.vstack((body, d.T))
+
+		#create sets to check tuples
+		pos_set = [tuple(x) for x in move_positions]
+		body_set = [tuple(x) for x in body]
+        #print("move array",move_positions)
+        #print("move set",pos_set)
+		bad_pos = []
+		for pos in pos_set:
+			bad_pos.append(pos in body_set)
 
 		# Checks for food in the next moves
 		foodMoves = []
