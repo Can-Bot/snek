@@ -48,6 +48,7 @@ class Battlesnake(object):
 		# Dimensions of board
 		height = data['board']['height']
 		width = data['board']['width']
+		[board_width,board_height] = [data["board"]["width"],data["board"]["height"]]
 
 		# Position of head
 		head = data['you']['head']
@@ -128,15 +129,26 @@ class Battlesnake(object):
 		food_norm = np.linalg.norm(food_vector, axis = 1)
 		nearest_food = food[np.argsort(food_norm)][0,:]
 
-
         #calculating distances from moves to food 
 		move_positions = []
 		nextMove = giveNextMove(head)
 		for newMove in nextMove:
 			move_positions.append([nextMove[newMove]["x"],nextMove[newMove]["y"]])
-
 		direction_vector = nearest_food - move_positions
 		wheight = np.linalg.norm(direction_vector, axis = 1)
+
+		#create a matrix with two extra rows and columns filed with ones 
+		x= np.pad(np.zeros((board_width,board_height)),(1,1),'constant',constant_values=(1,))
+		#create two matrices storing indices
+		[grid_x , grid_y] = np.indices((x.shape))
+		#stack and reshape the two index matrix to create a coordinate matrix
+		grid_coor = np.vstack((grid_x-1,grid_y-1)).reshape(2,x.shape[0],x.shape[1])
+        #extract the index of the borders of the padded matrix
+		w = np.array(np.where(x==1))
+        #extract the coordinates of the borders of the matrix
+		d = grid_coor[:,w[0,:],w[1,:]]
+
+		body = np.vstack((body, d.T))
 
 		# Checks for food in the next moves
 		foodMoves = []
