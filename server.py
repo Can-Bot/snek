@@ -55,7 +55,7 @@ class Battlesnake(object):
 		body = data['you']['body']
 
 		possible_moves = ["up", "down", "left", "right"]
-
+		print(possible_moves)
 		# Position of head if snake moves in direction
 		def giveNextMove(head):
 			upNext = head.copy(); upNext['y'] += 1
@@ -68,16 +68,8 @@ class Battlesnake(object):
 
 		# print(head); print(upNext); print(downNext); print(leftNext); print(rightNext)
 
-		def twoStep(head):
-			upNext = head.copy(); upNext['y'] += 2
-			downNext = head.copy(); downNext['y'] -= 2
-			leftNext = head.copy(); leftNext['x'] -= 2
-			rightNext = head.copy(); rightNext['x'] += 2
-
-			nextPos = {"up":upNext, "down":downNext, "left":leftNext, "right":rightNext}
-			return nextPos
-
 		def deleteMoves(nextPos,body, nextPossibleMoves):
+
 			# If move would result in collision with self, remove from possible moves
 			if (nextPos["up"] in body) or (nextPos["up"]['y'] >= height):
 				nextPossibleMoves.remove('up')
@@ -87,16 +79,20 @@ class Battlesnake(object):
 				nextPossibleMoves.remove('left')
 			if (nextPos["right"] in body) or (nextPos["right"]['x'] >= width):
 				nextPossibleMoves.remove('right')
+			moveCount = len(nextPossibleMoves)
 
-			return
+			return moveCount
 
 		nextPos = giveNextMove(head)
 		twoStepPos = twoStep(head)
 		deleteMoves(nextPos, body, possible_moves)
 
+		print(possible_moves)
     	for newHead in nextPos:
       		twoStep = giveNextMove(nextPos[newHead])
-      		deleteMoves(twoStep, body, possible_moves)
+			nextPossibleMoves = possible_moves
+      		if deleteMoves(twoStep, body, nextPossibleMoves) < 0:
+				possible_moves.remove(newHead)
 
     	# Checks for food in the next moves
 		foodMoves = []
