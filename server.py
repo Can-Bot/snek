@@ -56,6 +56,7 @@ class Battlesnake(object):
 
 		#List of snake dicts
 		snakes = data["board"]["snakes"]
+
 		#Puts all of the coordinates of the snakes into a list
 		snakeBodies = []
 		for snake in snakes:
@@ -112,8 +113,7 @@ class Battlesnake(object):
 		# gives snake foresight
 		for newHead in nextPos:
 			twoStep = giveNextMove(nextPos[newHead])
-			nextPossibleMoves = possible_moves
-			if len(checkMoves(twoStep, snakeBodies)) == 1:
+			if len(checkMoves(twoStep, snakeBodies)) < 1:
 				possible_moves.remove(newHead)
 
 
