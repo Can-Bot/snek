@@ -105,18 +105,16 @@ class Battlesnake(object):
 			
 			return forbiddenMove
 
+		#generates new positions and deletes the unavailable ones
 		nextPos = giveNextMove(head)
 		deleteMoves(nextPos, snakeBodies, possible_moves)
-		print(possible_moves)
 
-
+		# gives snake foresight
 		for newHead in nextPos:
 			twoStep = giveNextMove(nextPos[newHead])
 			nextPossibleMoves = possible_moves
-			if len(checkMoves(twoStep, snakeBodies)) < 1:
+			if len(checkMoves(twoStep, snakeBodies)) == 1:
 				possible_moves.remove(newHead)
-
-		print(possible_moves)
 
 
 		#store food coordinates
@@ -130,16 +128,6 @@ class Battlesnake(object):
 		food_norm = np.linalg.norm(food_vector, axis = 1)
 		nearest_food = food[np.argsort(food_norm)][0,:]
 
-		# Checks for food in the next moves
-		foodMoves = []
-		for nextMove in nextPos:
-			if nextPos[nextMove] in data['board']['food']:
-				foodMoves.append(nextMove)
-		if foodMoves != []:
-			move = random.choice(foodMoves)
-		else:
-			move = random.choice(possible_moves)
-
 
         #calculating distances from moves to food 
 		move_positions = []
@@ -150,6 +138,17 @@ class Battlesnake(object):
 		direction_vector = nearest_food - move_positions
 		wheight = np.linalg.norm(direction_vector, axis = 1)
 
+		# Checks for food in the next moves
+		foodMoves = []
+		for nextMove in nextPos:
+			if nextPos[nextMove] in data['board']['food']:
+				foodMoves.append(nextMove)
+
+		#preferrs food over randomly moving		
+		if foodMoves != []:
+			move = random.choice(foodMoves)
+		else:
+			move = random.choice(possible_moves)
 
 		print(f"MOVE: {move}")
 		return {"move": move}
