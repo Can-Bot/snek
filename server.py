@@ -77,24 +77,27 @@ class Battlesnake(object):
 			nextPos = {"up":upNext, "down":downNext, "left":leftNext, "right":rightNext}
 			return nextPos
 
-		def deleteMoves(nextPos, possible_moves):
+		def deleteMoves(nextPos,body, nextPossibleMoves):
 			# If move would result in collision with self, remove from possible moves
 			if (nextPos["up"] in body) or (nextPos["up"]['y'] >= height):
-				possible_moves.remove('up')
+				nextPossibleMoves.remove('up')
 			if (nextPos["down"] in body) or (nextPos["down"]['y'] < 0):
-				possible_moves.remove('down')
+				nextPossibleMoves.remove('down')
 			if (nextPos["left"] in body) or (nextPos["left"]['x'] < 0):
-				possible_moves.remove('left')
+				nextPossibleMoves.remove('left')
 			if (nextPos["right"] in body) or (nextPos["right"]['x'] >= width):
-				possible_moves.remove('right')
+				nextPossibleMoves.remove('right')
 
 			return
 
-
 		nextPos = giveNextMove(head)
 		twoStepPos = twoStep(head)
-		deleteMoves(nextPos, possible_moves)
-		deleteMoves(twoStepPos, possible_moves)
+		deleteMoves(nextPos, body, possible_moves)
+
+    	for newHead in nextPos:
+      		twoStep = giveNextMove(nextPos[newHead])
+      		deleteMoves(twoStep, body, possible_moves)
+
     	# Checks for food in the next moves
 		foodMoves = []
 		for nextMove in nextPos:
