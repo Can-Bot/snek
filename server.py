@@ -75,9 +75,10 @@ class Battlesnake(object):
 		if (rightNext in body) or (rightNext['x'] >= width):
 			possible_moves.remove('right')
 
+    # Checks for food in the next moves
 		foodMoves = []
 		for nextMove in nextPos:
-			if nextPos[nextMove] == data['board']['food']:
+			if nextPos[nextMove] in data['board']['food']:
 				foodMoves.append(nextMove)
 
 		if foodMoves != []:
