@@ -140,8 +140,15 @@ class Battlesnake(object):
 		else:
 			move = random.choice(possible_moves)
 
+"""
         #calculating distances from moves to food 
-		direction_vector = nearest_food - giveNextMove(head).values()
+		move_positions = []
+		nextMove = giveNextMove(head)
+		for newMove in nextMove:
+			move_positions.append([nextMove[newMove]["x"],nextMove[newMove]["y"]])
+"""
+
+		direction_vector = nearest_food - move_positions
 		wheight = np.linalg.norm(direction_vector, axis = 1)
 
 
