@@ -83,29 +83,31 @@ class Battlesnake(object):
 
 			return moveCount
 
-		nextPos = giveNextMove(head)
-		deleteMoves(nextPos, body, possible_moves)
+		    nextPos = giveNextMove(head)
+		    deleteMoves(nextPos, body, possible_moves)
 
-		print(possible_moves)
-		for newHead in nextPos:
-	  		twoStep = giveNextMove(nextPos[newHead])
-			nextPossibleMoves = possible_moves
-	  		if deleteMoves(twoStep, body, nextPossibleMoves) < 0:
-				possible_moves.remove(newHead)
+		    print(possible_moves)
+		    for newHead in nextPos:
+		        twoStep = giveNextMove(nextPos[newHead])
+		        nextPossibleMoves = possible_moves
+		        if deleteMoves(twoStep, body, nextPossibleMoves) < 0:
+		            possible_moves.remove(newHead)
 
-    	# Checks for food in the next moves
-		foodMoves = []
-		for nextMove in nextPos:
-			if nextPos[nextMove] in data['board']['food']:
-				foodMoves.append(nextMove)
 
-		if foodMoves != []:
-			move = random.choice(foodMoves)
-		else:
-			move = random.choice(possible_moves)
 
-		print(f"MOVE: {move}")
-		return {"move": move}
+	    	# Checks for food in the next moves
+			foodMoves = []
+			for nextMove in nextPos:
+				if nextPos[nextMove] in data['board']['food']:
+					foodMoves.append(nextMove)
+
+			if foodMoves != []:
+				move = random.choice(foodMoves)
+			else:
+				move = random.choice(possible_moves)
+
+			print(f"MOVE: {move}")
+			return {"move": move}
 
 	@cherrypy.expose
 	@cherrypy.tools.json_in()
