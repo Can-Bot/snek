@@ -92,7 +92,9 @@ class Battlesnake(object):
 
 
 		nextPos = giveNextMove(head)
+		twoStepPos = twoStep(head)
 		deleteMoves(nextPos, possible_moves)
+		deleteMoves(twoStepPos, possible_moves)
     	# Checks for food in the next moves
 		foodMoves = []
 		for nextMove in nextPos:
