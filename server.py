@@ -84,7 +84,6 @@ class Battlesnake(object):
 			return moveCount
 
 		nextPos = giveNextMove(head)
-		twoStepPos = twoStep(head)
 		deleteMoves(nextPos, body, possible_moves)
 
 		print(possible_moves)
