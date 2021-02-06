@@ -43,7 +43,6 @@ class Battlesnake(object):
 		# Valid moves are "up", "down", "left", or "right".
 		# TODO: Use the information in cherrypy.request.json to decide your next move.
 		data = cherrypy.request.json
-		pp.pprint(data)
 
 		# Dimensions of board
 		height = data['board']['height']
@@ -55,7 +54,7 @@ class Battlesnake(object):
 		body = data['you']['body']
 
 		possible_moves = ["up", "down", "left", "right"]
-		print(possible_moves)
+		
 		# Position of head if snake moves in direction
 		def giveNextMove(head):
 			upNext = head.copy(); upNext['y'] += 1
@@ -83,31 +82,32 @@ class Battlesnake(object):
 
 			return moveCount
 
-		    nextPos = giveNextMove(head)
-		    deleteMoves(nextPos, body, possible_moves)
-
-		    print(possible_moves)
-		    for newHead in nextPos:
-		        twoStep = giveNextMove(nextPos[newHead])
-		        nextPossibleMoves = possible_moves
-		        if deleteMoves(twoStep, body, nextPossibleMoves) < 0:
-		            possible_moves.remove(newHead)
+		nextPos = giveNextMove(head)
+		deleteMoves(nextPos, body, possible_moves)
+		print(possible_moves)
 
 
+#		for newHead in nextPos:
+#			twoStep = giveNextMove(nextPos[newHead])
+#			nextPossibleMoves = possible_moves
+#			if deleteMoves(twoStep, body, nextPossibleMoves) < 1:
+#				possible_moves.remove(newHead)
 
-	    	# Checks for food in the next moves
-			foodMoves = []
-			for nextMove in nextPos:
-				if nextPos[nextMove] in data['board']['food']:
-					foodMoves.append(nextMove)
+#		print(possible_moves)
 
-			if foodMoves != []:
-				move = random.choice(foodMoves)
-			else:
-				move = random.choice(possible_moves)
+		# Checks for food in the next moves
+		foodMoves = []
+		for nextMove in nextPos:
+			if nextPos[nextMove] in data['board']['food']:
+				foodMoves.append(nextMove)
 
-			print(f"MOVE: {move}")
-			return {"move": move}
+		if foodMoves != []:
+			move = random.choice(foodMoves)
+		else:
+			move = random.choice(possible_moves)
+
+		print(f"MOVE: {move}")
+		return {"move": move}
 
 	@cherrypy.expose
 	@cherrypy.tools.json_in()
