@@ -66,23 +66,23 @@ class Battlesnake(object):
 
 		# If move would result in collision with self, remove from possible moves
 		if (upNext in body) or (upNext['y'] >= height):
-		  possible_moves.remove('up')
+			possible_moves.remove('up')
 		if (downNext in body) or (downNext['y'] < 0):
-		  possible_moves.remove('down')
+			possible_moves.remove('down')
 		if (leftNext in body) or (leftNext['x'] < 0):
-		  possible_moves.remove('left')
+			possible_moves.remove('left')
 		if (rightNext in body) or (rightNext['x'] >= width):
-		  possible_moves.remove('right')
+			possible_moves.remove('right')
 
-    foodMoves = []
-    for nextMove in nextPos:
-      if nextPos[nextMove] == data['board']['food']:
-        foodMoves.append(nextMove)
+		foodMoves = []
+		for nextMove in nextPos:
+			if nextPos[nextMove] == data['board']['food']:
+				foodMoves.append(nextMove)
 
-    if foodMoves != []:
-      move = random.choice(foodMoves)
-    else:
-      move = random.choice(possible_moves)
+		if foodMoves != []:
+			move = random.choice(foodMoves)
+		else:
+			move = random.choice(possible_moves)
     
 		print(f"MOVE: {move}")
 		return {"move": move}
