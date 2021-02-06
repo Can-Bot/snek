@@ -62,6 +62,7 @@ class Battlesnake(object):
 		leftNext = head.copy(); leftNext['x'] -= 1
 		rightNext = head.copy(); rightNext['x'] += 1
 
+		nextPos = [upNext, downNext, leftNext, rightNext]
 		print(head); print(upNext); print(downNext); print(leftNext); print(rightNext)
 
 		# If move would result in collision with self, remove from possible moves
@@ -83,7 +84,7 @@ class Battlesnake(object):
 			move = random.choice(foodMoves)
 		else:
 			move = random.choice(possible_moves)
-    
+
 		print(f"MOVE: {move}")
 		return {"move": move}
 
