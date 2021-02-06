@@ -1,7 +1,8 @@
 import os
 import random
-
+import json
 import cherrypy
+import numpy as np
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -117,16 +118,32 @@ class Battlesnake(object):
 
 		print(possible_moves)
 
+
+		#store food coordinates
+		food =[]
+		for food_bit in data["board"]["food"]:
+			food.append([food_bit["x"],food_bit["y"]])
+		food = np.array(food)
+
+		#evaluate nearest food coordinates
+		food_vector = np.array([head["x"], head["y"]]) - food
+		food_norm = np.linalg.norm(food_vector, axis = 1)
+		nearest_food = food[np.argsort(food_norm)][0,:]
+
 		# Checks for food in the next moves
 		foodMoves = []
 		for nextMove in nextPos:
 			if nextPos[nextMove] in data['board']['food']:
 				foodMoves.append(nextMove)
-
 		if foodMoves != []:
 			move = random.choice(foodMoves)
 		else:
 			move = random.choice(possible_moves)
+
+        #calculating distances from moves to food 
+		direction_vector = nearest_food - giveNextMove(head).values()
+		wheight = np.linalg.norm(direction_vector, axis = 1)
+
 
 		print(f"MOVE: {move}")
 		return {"move": move}
