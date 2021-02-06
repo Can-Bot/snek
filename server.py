@@ -68,6 +68,15 @@ class Battlesnake(object):
 
 		# print(head); print(upNext); print(downNext); print(leftNext); print(rightNext)
 
+		def twoStep(head):
+			upNext = head.copy(); upNext['y'] += 2
+			downNext = head.copy(); downNext['y'] -= 2
+			leftNext = head.copy(); leftNext['x'] -= 2
+			rightNext = head.copy(); rightNext['x'] += 2
+
+			nextPos = {"up":upNext, "down":downNext, "left":leftNext, "right":rightNext}
+			return nextPos
+
 		def deleteMoves(nextPos, possible_moves):
 			# If move would result in collision with self, remove from possible moves
 			if (nextPos["up"] in body) or (nextPos["up"]['y'] >= height):
@@ -79,7 +88,7 @@ class Battlesnake(object):
 			if (nextPos["right"] in body) or (nextPos["right"]['x'] >= width):
 				possible_moves.remove('right')
 
-			return 
+			return
 
 
 		nextPos = giveNextMove(head)
