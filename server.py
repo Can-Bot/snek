@@ -57,30 +57,34 @@ class Battlesnake(object):
 		possible_moves = ["up", "down", "left", "right"]
 
 		# Position of head if snake moves in direction
-		def giveNextMove(head, possible_moves):
+		def giveNextMove(head):
 			upNext = head.copy(); upNext['y'] += 1
 			downNext = head.copy(); downNext['y'] -= 1
 			leftNext = head.copy(); leftNext['x'] -= 1
 			rightNext = head.copy(); rightNext['x'] += 1
 
 			nextPos = {"up":upNext, "down":downNext, "left":leftNext, "right":rightNext}
-
-			print(head); print(upNext); print(downNext); print(leftNext); print(rightNext)
-
-			# If move would result in collision with self, remove from possible moves
-			if (upNext in body) or (upNext['y'] >= height):
-				possible_moves.remove('up')
-			if (downNext in body) or (downNext['y'] < 0):
-				possible_moves.remove('down')
-			if (leftNext in body) or (leftNext['x'] < 0):
-				possible_moves.remove('left')
-			if (rightNext in body) or (rightNext['x'] >= width):
-				possible_moves.remove('right')
-
 			return nextPos
 
-		giveNextMove(head, possible_moves)
-    # Checks for food in the next moves
+		# print(head); print(upNext); print(downNext); print(leftNext); print(rightNext)
+
+		def deleteMoves(nextPos, possible_moves):
+			# If move would result in collision with self, remove from possible moves
+			if (nextPos["up"] in body) or (nextPos["up"]['y'] >= height):
+				possible_moves.remove('up')
+			if (nextPos["down"] in body) or (nextPos["down"]['y'] < 0):
+				possible_moves.remove('down')
+			if (nextPos["left"] in body) or (nextPos["left"]['x'] < 0):
+				possible_moves.remove('left')
+			if (nextPos["right"] in body) or (nextPos["right"]['x'] >= width):
+				possible_moves.remove('right')
+
+			return 
+
+
+		nextPos = giveNextMove(head)
+		deleteMoves(nextPos, possible_moves)
+    	# Checks for food in the next moves
 		foodMoves = []
 		for nextMove in nextPos:
 			if nextPos[nextMove] in data['board']['food']:
