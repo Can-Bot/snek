@@ -88,10 +88,10 @@ class Battlesnake(object):
 		deleteMoves(nextPos, body, possible_moves)
 
 		print(possible_moves)
-    	for newHead in nextPos:
-      		twoStep = giveNextMove(nextPos[newHead])
+		for newHead in nextPos:
+	  		twoStep = giveNextMove(nextPos[newHead])
 			nextPossibleMoves = possible_moves
-      		if deleteMoves(twoStep, body, nextPossibleMoves) < 0:
+	  		if deleteMoves(twoStep, body, nextPossibleMoves) < 0:
 				possible_moves.remove(newHead)
 
     	# Checks for food in the next moves
