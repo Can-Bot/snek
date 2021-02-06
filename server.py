@@ -19,12 +19,12 @@ class Battlesnake(object):
 		# TIP: If you open your Battlesnake URL in browser you should see this data
 		return {
 			"apiversion": "1",
-			"author": "Alistair Hewitt",  # TODO: Your Battlesnake Username
-			"color": "#ffa500",  # TODO: Personalize
-			"head": "default",  # TODO: Personalize
+			"author": "Alistair Hewitt, Djan Tanova",  # TODO: Your Battlesnake Username
+			"color": "#ff00ff",  # TODO: Personalize
+			"head": "gamer",  # TODO: Personalize
 			"tail": "default",  # TODO: Personalize
 		}
-	
+
 	@cherrypy.expose
 	@cherrypy.tools.json_in()
 	def start(self):
@@ -43,7 +43,6 @@ class Battlesnake(object):
 		# Valid moves are "up", "down", "left", or "right".
 		# TODO: Use the information in cherrypy.request.json to decide your next move.
 		data = cherrypy.request.json
-		pp.pprint(data)
 
 		# Dimensions of board
 		height = data['board']['height']
@@ -54,35 +53,80 @@ class Battlesnake(object):
 		# List of positions of body
 		body = data['you']['body']
 
+		#List of snake dicts
+		snakes = data["board"]["snakes"]
+		#Puts all of the coordinates of the snakes into a list
+		snakeBodies = []
+		for snake in snakes:
+			for snakeBits in snake["body"]:
+				snakeBodies.append(snakeBits)
+
 		possible_moves = ["up", "down", "left", "right"]
-
+		
 		# Position of head if snake moves in direction
-		upNext = head.copy(); upNext['y'] += 1
-		downNext = head.copy(); downNext['y'] -= 1
-		leftNext = head.copy(); leftNext['x'] -= 1
-		rightNext = head.copy(); rightNext['x'] += 1
+		def giveNextMove(head):
+			upNext = head.copy(); upNext['y'] += 1
+			downNext = head.copy(); downNext['y'] -= 1
+			leftNext = head.copy(); leftNext['x'] -= 1
+			rightNext = head.copy(); rightNext['x'] += 1
 
-		print(head); print(upNext); print(downNext); print(leftNext); print(rightNext)
+			nextPos = {"up":upNext, "down":downNext, "left":leftNext, "right":rightNext}
+			return nextPos
 
-		# If move would result in collision with self, remove from possible moves
-		if (upNext in body) or (upNext['y'] >= height):
-		  possible_moves.remove('up')
-		if (downNext in body) or (downNext['y'] < 0):
-		  possible_moves.remove('down')
-		if (leftNext in body) or (leftNext['x'] < 0):
-		  possible_moves.remove('left')
-		if (rightNext in body) or (rightNext['x'] >= width):
-		  possible_moves.remove('right')
+		# print(head); print(upNext); print(downNext); print(leftNext); print(rightNext)
 
-    foodMoves = []
-    for nextMove in nextPos:
-      if nextPos[nextMove] == data['board']['food']:
-        foodMoves.append(nextMove)
+		def deleteMoves(nextPos,snakeBodies, nextPossibleMoves):
 
-    if foodMoves != []:  
-      move = random.choice(foodMoves)
-    else:
-        move = random.choice(possible_moves)
+			# If move would result in collision with self, remove from possible moves
+			if (nextPos["up"] in snakeBodies) or (nextPos["up"]['y'] >= height):
+				nextPossibleMoves.remove('up')
+			if (nextPos["down"] in snakeBodies) or (nextPos["down"]['y'] < 0):
+				nextPossibleMoves.remove('down')
+			if (nextPos["left"] in snakeBodies) or (nextPos["left"]['x'] < 0):
+				nextPossibleMoves.remove('left')
+			if (nextPos["right"] in snakeBodies) or (nextPos["right"]['x'] >= width):
+				nextPossibleMoves.remove('right')
+			moveCount = len(nextPossibleMoves)
+
+			return moveCount
+
+		def checkMoves(nextPos,snakeBodies):
+			forbiddenMove = []
+			# If move would result in collision with self, add to list of forbidden moves
+			if (nextPos["up"] in snakeBodies) or (nextPos["up"]['y'] >= height):
+				forbiddenMove.append('up')
+			if (nextPos["down"] in snakeBodies) or (nextPos["down"]['y'] < 0):
+				forbiddenMove.append('down')
+			if (nextPos["left"] in snakeBodies) or (nextPos["left"]['x'] < 0):
+				forbiddenMove.append('left')
+			if (nextPos["right"] in snakeBodies) or (nextPos["right"]['x'] >= width):
+				forbiddenMove.append('right')
+			
+			return forbiddenMove
+
+		nextPos = giveNextMove(head)
+		deleteMoves(nextPos, snakeBodies, possible_moves)
+		print(possible_moves)
+
+
+		for newHead in nextPos:
+			twoStep = giveNextMove(nextPos[newHead])
+			nextPossibleMoves = possible_moves
+			if len(checkMoves(twoStep, snakeBodies)) < 1:
+				possible_moves.remove(newHead)
+
+		print(possible_moves)
+
+		# Checks for food in the next moves
+		foodMoves = []
+		for nextMove in nextPos:
+			if nextPos[nextMove] in data['board']['food']:
+				foodMoves.append(nextMove)
+
+		if foodMoves != []:
+			move = random.choice(foodMoves)
+		else:
+			move = random.choice(possible_moves)
 
 		print(f"MOVE: {move}")
 		return {"move": move}
