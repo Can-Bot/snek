@@ -58,8 +58,8 @@ class Battlesnake(object):
 		#Puts all of the coordinates of the snakes into a list
 		snakeBodies = []
 		for snake in snakes:
-			for snakeBits in snakes[snake]["body"]:
-				snakeBodies.append(snakes[snake]["body"][snakeBits])
+			for snakeBits in snake["body"]:
+				snakeBodies.append(snakeBits)
 
 		possible_moves = ["up", "down", "left", "right"]
 		
