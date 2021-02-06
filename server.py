@@ -53,6 +53,14 @@ class Battlesnake(object):
 		# List of positions of body
 		body = data['you']['body']
 
+		#List of snake dicts
+		snakes = data["board"]["snakes"]
+		#Puts all of the coordinates of the snakes into a list
+		snakeBodies = []
+		for snake in snakes:
+			for snakeBits in snakes[snake]["body"]:
+				snakeBodies.append(snakes[snake]["body"][snakeBits])
+
 		possible_moves = ["up", "down", "left", "right"]
 		
 		# Position of head if snake moves in direction
@@ -67,33 +75,47 @@ class Battlesnake(object):
 
 		# print(head); print(upNext); print(downNext); print(leftNext); print(rightNext)
 
-		def deleteMoves(nextPos,body, nextPossibleMoves):
+		def deleteMoves(nextPos,snakeBodies, nextPossibleMoves):
 
 			# If move would result in collision with self, remove from possible moves
-			if (nextPos["up"] in body) or (nextPos["up"]['y'] >= height):
+			if (nextPos["up"] in snakeBodies) or (nextPos["up"]['y'] >= height):
 				nextPossibleMoves.remove('up')
-			if (nextPos["down"] in body) or (nextPos["down"]['y'] < 0):
+			if (nextPos["down"] in snakeBodies) or (nextPos["down"]['y'] < 0):
 				nextPossibleMoves.remove('down')
-			if (nextPos["left"] in body) or (nextPos["left"]['x'] < 0):
+			if (nextPos["left"] in snakeBodies) or (nextPos["left"]['x'] < 0):
 				nextPossibleMoves.remove('left')
-			if (nextPos["right"] in body) or (nextPos["right"]['x'] >= width):
+			if (nextPos["right"] in snakeBodies) or (nextPos["right"]['x'] >= width):
 				nextPossibleMoves.remove('right')
 			moveCount = len(nextPossibleMoves)
 
 			return moveCount
 
+		def checkMoves(nextPos,snakeBodies):
+			forbiddenMove = []
+			# If move would result in collision with self, add to list of forbidden moves
+			if (nextPos["up"] in snakeBodies) or (nextPos["up"]['y'] >= height):
+				forbiddenMove.append('up')
+			if (nextPos["down"] in snakeBodies) or (nextPos["down"]['y'] < 0):
+				forbiddenMove.append('down')
+			if (nextPos["left"] in snakeBodies) or (nextPos["left"]['x'] < 0):
+				forbiddenMove.append('left')
+			if (nextPos["right"] in snakeBodies) or (nextPos["right"]['x'] >= width):
+				forbiddenMove.append('right')
+			
+			return forbiddenMove
+
 		nextPos = giveNextMove(head)
-		deleteMoves(nextPos, body, possible_moves)
+		deleteMoves(nextPos, snakeBodies, possible_moves)
 		print(possible_moves)
 
 
-#		for newHead in nextPos:
-#			twoStep = giveNextMove(nextPos[newHead])
-#			nextPossibleMoves = possible_moves
-#			if deleteMoves(twoStep, body, nextPossibleMoves) < 1:
-#				possible_moves.remove(newHead)
+		for newHead in nextPos:
+			twoStep = giveNextMove(nextPos[newHead])
+			nextPossibleMoves = possible_moves
+			if len(checkMoves(twoStep, snakeBodies)) < 1:
+				possible_moves.remove(newHead)
 
-#		print(possible_moves)
+		print(possible_moves)
 
 		# Checks for food in the next moves
 		foodMoves = []
